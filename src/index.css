@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 
 html,
 body,
@@ -6,5 +6,30 @@ body,
 .app {
   height: 100%;
   width: 100%;
-  font-family: "Rubik", "sans-serif";
+  font-family: 'Roboto', 'sans-serif';
+}
+.side-navbar {
+  width: 240px;
+  height: 100%;
+  position: absolute;
+  left: -300px;
+  background-color: #e6e6fa;
+  transition: 0.5s;
+}
+
+.navbar-brand {
+  font-weight: bold;
+}
+
+.site-container {
+  transition: 0.4s;
+}
+.active-cont {
+  margin-left: 240px;
+}
+.active-nav {
+  left: 0px;
+}
+.nav-link {
+  font-weight: bold;
 }

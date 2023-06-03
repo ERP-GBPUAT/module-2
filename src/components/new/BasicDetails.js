@@ -1,249 +1,192 @@
-import {Box,Typography,TextField,Button} from "@mui/material";   
-import Navbar from 'components/navbar';    
-import {useContext,useState} from 'react';
-import FormContext from "context";
-import { useNavigate } from "react-router-dom";   
-import {Formik} from 'formik';    
+import { useContext, useState } from 'react';
+import FormContext from 'context';
+import { useNavigate } from 'react-router-dom';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 
-const BasicDetails = () => {      
-  const [isBank,setIsBank]=useState(false); 
-  const navigate=useNavigate();
-  const {registerSchema,data,setData}=useContext(FormContext);    
+const BasicDetails = () => {
+  const [isBank, setIsBank] = useState(false);
+  const navigate = useNavigate();
+  const { data, setData } = useContext(FormContext);
 
-  const handleFormSubmit=(newData)=>{
-     setData(prevData=>({
-        ...prevData,
-        ...newData
-     }))   
-  }
+  const handleFormSubmit = () => {
+    console.log(data);
+    navigate('/caution');
+  };
+  const handleChange = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
   return (
-    <Box display="flex">
-      <Box sx={{backgroundColor:"AliceBlue"}} width="18%" >
-        <Navbar/>
-      </Box>   
-      <Box 
-       width="80%"    
-       gap="2rem"
-       display="flex"       
-       flexDirection="column"  
-       justifyContent="space-around"  
-       alignItems="center"   
-      >          
-        <Typography variant="h4" fontWeight="bold">  
-          Enter Basic Details
-        </Typography>   
-        <Box display="flex" width="80%" justifyContent="space-between">
-          <Typography 
-           variant="h5" 
-           fontWeight="bold" 
-           backgroundColor={isBank?"Gainsboro":"LimeGreen"} 
-           width="35%"       
-           onClick={()=>setIsBank(false)}
-           >
-             Personal Details
-          </Typography> 
-          <Typography 
-            variant="h5" 
-            fontWeight="bold" 
-            backgroundColor={!isBank?"Gainsboro":"LimeGreen"}
-            width="35%"  
-            onClick={()=>setIsBank(true)}
-          >
-             Bank Details
-          </Typography>
-        </Box>    
-        <Box width="80%">
-          <Formik 
-            onSubmit={handleFormSubmit}   
-            initialValues={data} 
-            validationSchema={registerSchema}   
-          >            
-            {({
-              values,
-              errors,
-              touched,
-              handleBlur,
-              handleChange,
-              handleSubmit,
-              resetForm
-            })=>(
-                <form onSubmit={handleSubmit}>
-                  <Box    
-                    display="grid"   
-                    gap="30px" 
-                    gridTemplateColumns="repeat(4,minmax(0,1fr))"   
-                    sx={{
-                      "& > div":"span 4"
-                    }}
-                  >
-                      {!isBank ? ( 
-                        <>
-                          <TextField     
-                            label="Name" 
-                            onChange={handleChange}   
-                            onBlur={handleBlur}
-                            value={values.name}   
-                            name="name" 
-                            error={
-                              Boolean(touched.name) && Boolean(errors.name)
-                            }  
-                            helperText={touched.name && errors.name} 
-                            sx={{gridColumn:"span 2"}}
-                          />   
-                          <TextField    
-                            label="I.D. No." 
-                            onChange={handleChange}   
-                            onBlur={handleBlur}
-                            value={values.id}   
-                            name="id" 
-                            error={
-                            Boolean(touched.id) && Boolean(errors.id)
-                            }  
-                            helperText={touched.id && errors.id} 
-                            sx={{gridColumn:"span 2"}}
-                          /> 
-                          <TextField    
-                            label="Batch" 
-                            onChange={handleChange}  
-                            onBlur={handleBlur} 
-                            value={values.batch}   
-                            name="batch" 
-                            error={
-                            Boolean(touched.batch) && Boolean(errors.batch)
-                            }  
-                            helperText={touched.batch && errors.batch}   
-                            sx={{gridColumn:"span 2"}}
-                          /> 
-                          <TextField    
-                            label="Department" 
-                            onChange={handleChange}   
-                            onBlur={handleBlur} 
-                            value={values.department}   
-                            name="department" 
-                            error={
-                            Boolean(touched.department) && Boolean(errors.department)
-                            }  
-                            helperText={touched.department && errors.department}   
-                            sx={{gridColumn:"span 2"}}
-                          />  
-                          <TextField    
-                            label="Name of Advisor" 
-                            onChange={handleChange}   
-                            onBlur={handleBlur}
-                            value={values.advisorName}   
-                            name="advisorName" 
-                            error={
-                            Boolean(touched.advisorName) && Boolean(errors.advisorName)
-                            }  
-                            helperText={touched.advisorName && errors.advisorName}   
-                            sx={{gridColumn:"span 4"}} 
-                          /> 
-                          <TextField    
-                            label="Name of Hostel" 
-                            onChange={handleChange}   
-                            onBlur={handleBlur}
-                            value={values.hostelName}   
-                            name="hostelName" 
-                            error={
-                            Boolean(touched.hostelName) && Boolean(errors.hostelName)
-                            }  
-                            helperText={touched.hostelName && errors.hostelName}  
-                            sx={{gridColumn:"span 4"}}  
-                          />   
-                          <TextField    
-                            label="Email I.D." 
-                            onChange={handleChange}  
-                            onBlur={handleBlur} 
-                            value={values.email}   
-                            name="email" 
-                            error={
-                            Boolean(touched.email) && Boolean(errors.email)
-                            }  
-                            helperText={touched.email && errors.email}  
-                            sx={{gridColumn:"span 4"}}  
-                          /> 
-                          <TextField    
-                            label="Contact Number" 
-                            onChange={handleChange}   
-                            onBlur={handleBlur}
-                            value={values.contact}   
-                            name="contact" 
-                            error={
-                            Boolean(touched.contact) && Boolean(errors.contact)
-                            }  
-                            helperText={touched.contact && errors.contact}  
-                            sx={{gridColumn:"span 4"}}  
-                          />
-                        </>
-                      ):(
-                        <>   
-                          <TextField    
-                            label="Name" 
-                            onChange={handleChange}   
-                            onBlur={handleBlur}
-                            value={values.accountName}   
-                            name="accountName" 
-                            error={
-                            Boolean(touched.accountName) && Boolean(errors.accountName)
-                            }  
-                            helperText={touched.accountName && errors.accountName}   
-                            sx={{gridColumn:"span 4"}} 
-                          /> 
-                          <TextField    
-                            label="Account Number" 
-                            onChange={handleChange}   
-                            onBlur={handleBlur}
-                            value={values.accountNumber}   
-                            name="accountNumber" 
-                            error={
-                            Boolean(touched.accountNumber) && Boolean(errors.accountNumber)
-                            }  
-                            helperText={touched.accountNumber && errors.accountNumber}  
-                            sx={{gridColumn:"span 4"}}  
-                          />   
-                          <TextField    
-                            label="Bank Name" 
-                            onChange={handleChange}  
-                            onBlur={handleBlur} 
-                            value={values.bankName}   
-                            name="bankName" 
-                            error={
-                            Boolean(touched.bankName) && Boolean(errors.bankName)
-                            }  
-                            helperText={touched.bankName && errors.bankName}  
-                            sx={{gridColumn:"span 4"}}  
-                          /> 
-                          <TextField    
-                            label="Branch" 
-                            onChange={handleChange} 
-                            onBlur={handleBlur}  
-                            value={values.branch}   
-                            name="branch" 
-                            error={
-                            Boolean(touched.branch) && Boolean(errors.branch)
-                            }  
-                            helperText={touched.branch && errors.branch}  
-                            sx={{gridColumn:"span 4"}}  
-                          />
-                        </>
-                      )}
-                  </Box>
-                </form>
-            )}
-          </Formik>  
-        </Box>     
-        <Box width="80%" display="flex" justifyContent="flex-end">
-          <Button   
-            type="submit" 
-            sx={{color:"Black",backgroundColor:"Aqua"}} 
-            onClick={()=>{navigate('/caution')}}
-          >
-            Next
-          </Button>
-        </Box>
-      </Box>
-    </Box>
-  )
-}
+    <Container className="d-flex flex-column">
+      <h3 className="text-center mt-4">Enter Basic Details</h3>
+      <div className="d-flex justify-content-between gap-20">
+        <Button
+          variant={isBank ? 'dark' : 'success'}
+          type="button"
+          onClick={() => setIsBank(false)}
+        >
+          Personal Details
+        </Button>
+        <Button
+          variant={isBank ? 'success' : 'dark'}
+          type="button"
+          onClick={() => setIsBank(true)}
+        >
+          Bank Details
+        </Button>
+      </div>
+      <Form onSubmit={handleFormSubmit}>
+        {!isBank ? (
+          <Row className="justify-content-center mt-4">
+            <Col xs={12} md={4}>
+              <Form.Group controlId="name">
+                <Form.Label>Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="name"
+                  value={data.name}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
 
-export default BasicDetails
+              <Form.Group controlId="id">
+                <Form.Label>ID</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="id"
+                  value={data.id}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+
+              <Form.Group controlId="batch">
+                <Form.Label>Batch</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="batch"
+                  value={data.batch}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+
+              <Form.Group controlId="department">
+                <Form.Label>department</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="department"
+                  value={data.department}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+            </Col>
+            <Col xs={12} md={4}>
+              <Form.Group controlId="advisorName">
+                <Form.Label>AdvisorName</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="advisorName"
+                  value={data.advisorName}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+
+              <Form.Group controlId="hostelName">
+                <Form.Label>HostelName</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="hostelName"
+                  value={data.hostelName}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+
+              <Form.Group controlId="email">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="email"
+                  value={data.email}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+
+              <Form.Group controlId="contact">
+                <Form.Label>Contact</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="contact"
+                  value={data.contact}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+        ) : (
+          <Row className="justify-content-center mt-4">
+            <Col xs={12} md={6}>
+              <Form.Group controlId="accountName">
+                <Form.Label>AccountName</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="accountName"
+                  value={data.accountName}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+
+              <Form.Group controlId="accountNumber">
+                <Form.Label>AccountNumber</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="accountNumber"
+                  value={data.accountNumber}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+
+              <Form.Group controlId="bankName">
+                <Form.Label>BankName</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="bankName"
+                  value={data.bankName}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+
+              <Form.Group controlId="bankBranch">
+                <Form.Label>BankBranch</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="bankBranch"
+                  value={data.bankBranch}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+        )}
+        <Row className="mt-4">
+          <Col xs={12} md={4}>
+            <Button variant="primary" type="submit">
+              Next
+            </Button>
+          </Col>
+        </Row>
+      </Form>
+    </Container>
+  );
+};
+
+export default BasicDetails;

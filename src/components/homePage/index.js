@@ -47,7 +47,6 @@ const HomePage = () => {
         <>Loading...</>
       ) : (
         <div className="main-content">
-          <NavbarDash />
           <MainDashboard data={data} />
         </div>
       )}

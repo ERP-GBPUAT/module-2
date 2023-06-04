@@ -9,8 +9,8 @@ body,
   font-family: 'Roboto', 'sans-serif';
 }
 .side-navbar {
-  width: 240px;
-  height: 100%;
+  /* width: 240px; */
+  /* height: 100%; */
   position: absolute;
   left: -500px;
   background-color: #e6e6fa;

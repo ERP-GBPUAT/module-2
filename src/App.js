@@ -211,18 +211,18 @@ function App() {
             </Nav>
           </div> */}
           <main>
-            <Container>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/details" element={<BasicDetails />} />
-                <Route path="/caution" element={<Caution />} />
-                <Route path="/food" element={<Food />} />
-                <Route path="/tour" element={<Tour />} />
-                <Route path="/status" element={<Status />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/print/:id" element={<Print />} />
-              </Routes>
-            </Container>
+            {/* <Container> */}
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/details" element={<BasicDetails />} />
+              <Route path="/caution" element={<Caution />} />
+              <Route path="/food" element={<Food />} />
+              <Route path="/tour" element={<Tour />} />
+              <Route path="/status" element={<Status />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/print/:id" element={<Print />} />
+            </Routes>
+            {/* </Container> */}
           </main>
         </div>
       </BrowserRouter>

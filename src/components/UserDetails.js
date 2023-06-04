@@ -177,7 +177,7 @@ const UserDetails = ({
                       type="text"
                       id="input-department"
                       className="form-control form-control-alternative"
-                      value={faculty.motherName}
+                      value={faculty?.motherName}
                     />
                   </div>
                 </div>
@@ -256,7 +256,9 @@ const UserDetails = ({
                     type="text"
                     id="input-department"
                     className="form-control form-control-alternative"
-                    value={isStudent ? faculty.discipline : faculty?.department}
+                    value={
+                      isStudent ? faculty?.discipline : faculty?.department
+                    }
                   />
                 </div>
               </div>
@@ -314,9 +316,7 @@ const UserDetails = ({
                   className="form-control form-control-alternative"
                   placeholder="A few words about you ..."
                   value={faculty?.researchInterests}
-                >
-                  {faculty?.researchInterests}
-                </textarea>
+                ></textarea>
               </div>
             )}
           </div>

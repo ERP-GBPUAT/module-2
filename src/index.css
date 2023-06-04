@@ -12,9 +12,10 @@ body,
   width: 240px;
   height: 100%;
   position: absolute;
-  left: -300px;
+  left: -500px;
   background-color: #e6e6fa;
   transition: 0.5s;
+  z-index: 10;
 }
 
 .navbar-brand {
@@ -23,9 +24,6 @@ body,
 
 .site-container {
   transition: 0.4s;
-}
-.active-cont {
-  margin-left: 240px;
 }
 .active-nav {
   left: 0px;

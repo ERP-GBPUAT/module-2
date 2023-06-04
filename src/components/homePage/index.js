@@ -33,6 +33,7 @@ const HomePage = () => {
           type: 'FETCH_SUCCESS',
           payload: JSON.parse(localStorage.getItem('data')),
         });
+        console.log('userr', data);
       } catch (error) {
         console.log(error);
         dispatch({ type: 'FETCH_FAIL', payload: error.msg });

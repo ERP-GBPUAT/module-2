@@ -20,11 +20,29 @@ import {
   Notifications,
   CommentBankTwoTone,
 } from '@mui/icons-material';
+import { useEffect } from 'react';
 function App() {
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
   const [toggle, setToggle] = useState(false);
   const { user } = useContext(FormContext);
   const signoutHandler = () => {};
+  useEffect(() => {
+    // let Msg = document.getElementById("message");
+    const recMsg = (e) => {
+      e.preventDefault();
+      // if (localStorage.getItem("token") && localStorage.getItem('token')!==undefined) return;
+      console.log('data', e.data);
+      if (!e.data.token) {
+        return;
+      }
+      localStorage.setItem('token', e.data.token);
+      localStorage.setItem('data', e.data.user);
+    };
+    window.addEventListener('message', recMsg);
+    return () => {
+      window.removeEventListener('message', recMsg);
+    };
+  }, []);
   return (
     <div className="app">
       <BrowserRouter>

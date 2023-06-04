@@ -7,6 +7,7 @@ const UserDetails = ({
   handleChange,
   faculty,
   user,
+  isStudent,
 }) => {
   return (
     <div className="card bg-secondary shadow">
@@ -86,7 +87,7 @@ const UserDetails = ({
                     className="form-control-label"
                     htmlFor="input-first-name"
                   >
-                    Faculty Id
+                    {isStudent ? 'Student Id' : 'Faculty Id'}
                   </label>
                   <input
                     disabled={inputDisabled}
@@ -102,7 +103,7 @@ const UserDetails = ({
               <div className="col-lg-6">
                 <div className="form-group focused">
                   <label className="form-control-label" htmlFor="Qualification">
-                    Qualification
+                    {isStudent ? 'Advisor id' : 'Qualification'}
                   </label>
                   <input
                     disabled={inputDisabled}
@@ -111,7 +112,9 @@ const UserDetails = ({
                     id="Qualification"
                     className="form-control form-control-alternative"
                     placeholder="Qualification"
-                    value={faculty?.qualification}
+                    value={
+                      isStudent ? faculty?.FacultyId : faculty?.qualification
+                    }
                   />
                 </div>
               </div>
@@ -122,24 +125,86 @@ const UserDetails = ({
             Other information
           </h6>
           <div className="pl-lg-4">
-            <div className="row">
-              <div className="col-md-12">
-                <div className="form-group focused">
-                  <label className="form-control-label" htmlFor="website-link">
-                    Website Link
-                  </label>
-                  <input
-                    disabled={inputDisabled}
-                    onChange={handleChange}
-                    id="website-link"
-                    className="form-control form-control-alternative"
-                    placeholder="Website Link"
-                    value={faculty?.bioWebLink}
-                    type="text"
-                  />
+            {isStudent ? (
+              <div className="row">
+                <div className="col-lg-4">
+                  <div className="form-group focused">
+                    <label className="form-control-label" htmlFor="input-phone">
+                      Batch
+                    </label>
+                    <input
+                      disabled={inputDisabled}
+                      onChange={handleChange}
+                      type="text"
+                      id="input-phone"
+                      className="form-control form-control-alternative"
+                      placeholder="Phone number"
+                      value={faculty?.batch}
+                    />
+                  </div>
+                </div>
+                <div className="col-lg-4">
+                  <div className="form-group focused">
+                    <label
+                      className="form-control-label"
+                      htmlFor="input-designation"
+                    >
+                      Father's Name
+                    </label>
+                    <input
+                      disabled={inputDisabled}
+                      onChange={handleChange}
+                      type="text"
+                      id="input-designation"
+                      className="form-control form-control-alternative"
+                      placeholder="Designation"
+                      value={faculty?.fatherName}
+                    />
+                  </div>
+                </div>
+                <div className="col-lg-4">
+                  <div className="form-group">
+                    <label
+                      className="form-control-label"
+                      htmlFor="input-department"
+                    >
+                      Mother's Name
+                    </label>
+                    <input
+                      disabled={inputDisabled}
+                      onChange={handleChange}
+                      placeholder="eg: Information Technology"
+                      type="text"
+                      id="input-department"
+                      className="form-control form-control-alternative"
+                      value={faculty.motherName}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="row">
+                <div className="col-md-12">
+                  <div className="form-group focused">
+                    <label
+                      className="form-control-label"
+                      htmlFor="website-link"
+                    >
+                      {'Website Link'}
+                    </label>
+                    <input
+                      disabled={inputDisabled}
+                      onChange={handleChange}
+                      id="website-link"
+                      className="form-control form-control-alternative"
+                      placeholder="Website Link"
+                      value={faculty?.bioWebLink}
+                      type="text"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
             <div className="row">
               <div className="col-lg-4">
                 <div className="form-group focused">
@@ -163,7 +228,7 @@ const UserDetails = ({
                     className="form-control-label"
                     htmlFor="input-designation"
                   >
-                    Designation
+                    {isStudent ? 'Degree' : 'Designation'}
                   </label>
                   <input
                     disabled={inputDisabled}
@@ -172,7 +237,7 @@ const UserDetails = ({
                     id="input-designation"
                     className="form-control form-control-alternative"
                     placeholder="Designation"
-                    value={faculty?.designation}
+                    value={isStudent ? faculty?.degree : faculty?.designation}
                   />
                 </div>
               </div>
@@ -182,7 +247,7 @@ const UserDetails = ({
                     className="form-control-label"
                     htmlFor="input-department"
                   >
-                    Department
+                    {isStudent ? 'Branch' : 'Department'}
                   </label>
                   <input
                     disabled={inputDisabled}
@@ -191,7 +256,7 @@ const UserDetails = ({
                     type="text"
                     id="input-department"
                     className="form-control form-control-alternative"
-                    value={faculty?.department}
+                    value={isStudent ? faculty.discipline : faculty?.department}
                   />
                 </div>
               </div>
@@ -202,18 +267,58 @@ const UserDetails = ({
             Research Intrests
           </h6>
           <div className="pl-lg-4">
-            <div className="form-group focused">
-              <label className="form-control-label">Research interest</label>
-              <textarea
-                disabled={inputDisabled}
-                rows="4"
-                className="form-control form-control-alternative"
-                placeholder="A few words about you ..."
-                value={faculty?.researchInterests}
-              >
-                {faculty?.researchInterests}
-              </textarea>
-            </div>
+            {isStudent ? (
+              <div className="row">
+                <div className="col-lg-6">
+                  <div className="form-group focused">
+                    <label
+                      className="form-control-label"
+                      htmlFor="input-username"
+                    >
+                      Hostel Name
+                    </label>
+                    <input
+                      disabled={inputDisabled}
+                      onChange={handleChange}
+                      type="text"
+                      id="input-username"
+                      className="form-control form-control-alternative"
+                      placeholder="Username"
+                      value={faculty?.hostel}
+                    />
+                  </div>
+                </div>
+                <div className="col-lg-6">
+                  <div className="form-group">
+                    <label className="form-control-label" htmlFor="input-email">
+                      Room No.
+                    </label>
+                    <input
+                      disabled={inputDisabled}
+                      onChange={handleChange}
+                      type="email"
+                      id="input-email"
+                      className="form-control form-control-alternative"
+                      value={faculty?.roomNo}
+                      placeholder="jesse@example.com"
+                    />
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="form-group focused">
+                <label className="form-control-label">Research interest</label>
+                <textarea
+                  disabled={inputDisabled}
+                  rows="4"
+                  className="form-control form-control-alternative"
+                  placeholder="A few words about you ..."
+                  value={faculty?.researchInterests}
+                >
+                  {faculty?.researchInterests}
+                </textarea>
+              </div>
+            )}
           </div>
         </form>
       </div>

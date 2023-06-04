@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CardProfile = ({ user, faculty }) => {
+const CardProfile = ({ user, faculty, isStudent }) => {
   const handleChange = () => {
     console.log('hi');
   };
@@ -22,14 +22,14 @@ const CardProfile = ({ user, faculty }) => {
           </div>
         </div>
       </div>
-      <div className="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+      <div className="card-header text-center border-0 mt-3 pt-8 pt-md-4 pb-0 pb-md-4">
         <div className="d-flex justify-content-between">
-          <a href="#" className="btn btn-sm btn-info mr-4">
+          {/* <a href="#" className="btn btn-sm btn-info mr-4">
             Connect
-          </a>
-          <a href="#" className="btn btn-sm btn-default float-right">
+          </a> */}
+          {/* <a href="#" className="btn btn-sm btn-default float-right">
             Message
-          </a>
+          </a> */}
         </div>
       </div>
       <div className="card-body pt-0 pt-md-4">
@@ -46,7 +46,10 @@ const CardProfile = ({ user, faculty }) => {
           <div className="h5 mt-4">
             {/* todo desgination from api */}
             <i className="ni business_briefcase-24 mr-2"></i>
-            {faculty?.designation} - Department of {faculty?.department}
+            {isStudent ? faculty?.degree : faculty?.designation} -{' '}
+            {!isStudent
+              ? 'Department of ' + faculty?.department
+              : faculty?.discipline}
           </div>
           <div>
             {/* todo deaprtment form api */}
@@ -54,33 +57,6 @@ const CardProfile = ({ user, faculty }) => {
             +91 {user?.phoneNo}
           </div>
           <hr className="my-4" />
-          {faculty?.wardenOfHostel ? (
-            <div>
-              {/* todo deaprtment form api */}
-              <i className="ni education_hat mr-2"></i>
-              Warden of {faculty.wardenOfHostel}
-            </div>
-          ) : (
-            <></>
-          )}
-          {faculty?.hodOfDepartment ? (
-            <div>
-              {/* todo deaprtment form api */}
-              <i className="ni education_hat mr-2"></i>
-              Head of Department - {faculty.hodOfDepartment}
-            </div>
-          ) : (
-            <></>
-          )}
-          {faculty?.deanOfCollege ? (
-            <div>
-              {/* todo deaprtment form api */}
-              <i className="ni education_hat mr-2"></i>
-              Dean of College - {faculty.deanOfCollege}
-            </div>
-          ) : (
-            <></>
-          )}
         </div>
       </div>
     </div>

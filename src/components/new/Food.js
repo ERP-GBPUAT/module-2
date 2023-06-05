@@ -9,6 +9,43 @@ const Food = () => {
   const handleFormSubmit = () => {
     console.log(data);
     navigate('/');
+    console.log({
+      name: data.name,
+      id: data.id,
+      batch: data.batch,
+      department: data.department,
+      accountName: data.accountName,
+      accountNumber: data.accountNumber,
+      bankName: data.bankName,
+      bankBranch: data.bankBranch,
+      ledger: data.ledger,
+      year: data.year,
+      admissionFees: data.year,
+      tutionFees: data.tutionFees,
+      roomRent: data.roomRent,
+      tourMoney: data.tourMoney,
+      fine: data.fine,
+      miscCharges: data.miscCharges,
+      foodCharges: data.foodCharges,
+      other: data.other,
+      totalAmount: data.totalAmount,
+      tour1: data.tour1,
+      year1: data.year1,
+      lf1: data.lf1,
+      amount1: data.amount1,
+      tour2: data.tour2,
+      year2: data.year2,
+      lf2: data.lf2,
+      amount2: data.amount2,
+      tour3: data.tour3,
+      year3: data.year3,
+      lf3: data.lf3,
+      amount3: data.amount3,
+      foodAdvance: data.foodAdvance,
+      foodCharges2: data.foodCharges2,
+      other2: data.other2,
+      balance: data.balance,
+    });
   };
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });

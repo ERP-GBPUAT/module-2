@@ -13,7 +13,17 @@ const BasicDetails = () => {
     navigate('/caution');
   };
   const Faculty1 = () => {
-    console.log({ name: data.name, email: data.email, contact: data.contact });
+    console.log({
+      name: data.name,
+      email: data.email,
+      department: data.department,
+      designation: data.advisorName,
+      contact: data.contact,
+      accountName: data.accountName,
+      accountNumber: data.accountNumber,
+      bankName: data.bankName,
+      bankBranch: data.bankBranch,
+    });
     navigate('/');
   };
   const handleFormSubmit = () => {

@@ -7,10 +7,18 @@ const BasicDetails = () => {
   const [isBank, setIsBank] = useState(false);
   const navigate = useNavigate();
   const { data, setData } = useContext(FormContext);
-
-  const handleFormSubmit = () => {
+  const { text } = JSON.parse(localStorage.getItem('data'));
+  const student1 = () => {
     console.log(data);
     navigate('/caution');
+  };
+  const Faculty1 = () => {
+    console.log({ name: data.name, email: data.email, contact: data.contact });
+    navigate('/');
+  };
+  const handleFormSubmit = () => {
+    if (text?.user?.isFaculty) Faculty1();
+    else if (text?.user?.isFaculty) student1();
   };
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -36,98 +44,156 @@ const BasicDetails = () => {
       </div>
       <Form onSubmit={handleFormSubmit}>
         {!isBank ? (
-          <Row className="justify-content-center mt-4">
-            <Col xs={12} md={4}>
-              <Form.Group controlId="name">
-                <Form.Label>Name</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="name"
-                  value={data.name}
-                  onChange={handleChange}
-                  required
-                />
-              </Form.Group>
+          text?.user?.isStudent ? (
+            <Row className="justify-content-center mt-4">
+              <Col xs={12} md={4}>
+                <Form.Group controlId="name">
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="name"
+                    value={data.name}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
 
-              <Form.Group controlId="id">
-                <Form.Label>ID</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="id"
-                  value={data.id}
-                  onChange={handleChange}
-                  required
-                />
-              </Form.Group>
+                <Form.Group controlId="id">
+                  <Form.Label>ID</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="id"
+                    value={data.id}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
 
-              <Form.Group controlId="batch">
-                <Form.Label>Batch</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="batch"
-                  value={data.batch}
-                  onChange={handleChange}
-                  required
-                />
-              </Form.Group>
+                <Form.Group controlId="batch">
+                  <Form.Label>Batch</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="batch"
+                    value={data.batch}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
 
-              <Form.Group controlId="department">
-                <Form.Label>department</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="department"
-                  value={data.department}
-                  onChange={handleChange}
-                  required
-                />
-              </Form.Group>
-            </Col>
-            <Col xs={12} md={4}>
-              <Form.Group controlId="advisorName">
-                <Form.Label>AdvisorName</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="advisorName"
-                  value={data.advisorName}
-                  onChange={handleChange}
-                  required
-                />
-              </Form.Group>
+                <Form.Group controlId="department">
+                  <Form.Label>department</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="department"
+                    value={data.department}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
+              </Col>
+              <Col xs={12} md={4}>
+                <Form.Group controlId="advisorName">
+                  <Form.Label>AdvisorName</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="advisorName"
+                    value={data.advisorName}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
 
-              <Form.Group controlId="hostelName">
-                <Form.Label>HostelName</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="hostelName"
-                  value={data.hostelName}
-                  onChange={handleChange}
-                  required
-                />
-              </Form.Group>
+                <Form.Group controlId="hostelName">
+                  <Form.Label>HostelName</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="hostelName"
+                    value={data.hostelName}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
 
-              <Form.Group controlId="email">
-                <Form.Label>Email</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="email"
-                  value={data.email}
-                  onChange={handleChange}
-                  required
-                />
-              </Form.Group>
+                <Form.Group controlId="email">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="email"
+                    value={data.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
 
-              <Form.Group controlId="contact">
-                <Form.Label>Contact</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="contact"
-                  value={data.contact}
-                  onChange={handleChange}
-                  required
-                />
-              </Form.Group>
-            </Col>
-          </Row>
+                <Form.Group controlId="contact">
+                  <Form.Label>Contact</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="contact"
+                    value={data.contact}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+          ) : (
+            <Row className="justify-content-center mt-4">
+              <Col xs={12} md={6}>
+                <Form.Group controlId="name">
+                  <Form.Label>Name</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="name"
+                    value={data.name}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
+                <Form.Group controlId="department">
+                  <Form.Label>Department</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="department"
+                    value={data.department}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
+                <Form.Group controlId="advisorName">
+                  <Form.Label>advisorName</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="advisorName"
+                    value={data.advisorName}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
+                <Form.Group controlId="email">
+                  <Form.Label>email</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="email"
+                    value={data.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
+
+                <Form.Group controlId="contact">
+                  <Form.Label>Contact</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="contact"
+                    value={data.contact}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+          )
         ) : (
           <Row className="justify-content-center mt-4">
             <Col xs={12} md={6}>

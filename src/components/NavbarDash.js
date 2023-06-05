@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Button, Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
-import { Box } from "@mui/system";
-import { IconButton, Typography } from "@mui/material";
+import React, { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Button, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Box } from '@mui/system';
+import { IconButton, Typography } from '@mui/material';
 import {
   ArrowDropDown,
   CommentBankTwoTone,
   Notifications,
   Widgets,
-} from "@mui/icons-material";
-import { LinkContainer } from "react-router-bootstrap";
+} from '@mui/icons-material';
+import { LinkContainer } from 'react-router-bootstrap';
 
 const NavbarDash = () => {
   const navigate = useNavigate();
@@ -19,17 +19,17 @@ const NavbarDash = () => {
 
   const [openMenu, setOpenMenu] = React.useState(false);
   const logout = () => {
-    localStorage.removeItem("data");
-    localStorage.removeItem("token");
+    localStorage.removeItem('data');
+    localStorage.removeItem('token');
   };
   const handleMenu = () => {
     setOpenMenu(!openMenu);
   };
   const signoutHandler = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("data");
+    localStorage.removeItem('token');
+    localStorage.removeItem('data');
   };
-  const user = JSON.parse(localStorage.getItem("data"));
+  const user = JSON.parse(localStorage.getItem('data'));
   const handleProfile = () => {
     // fetchuserdata();
     // fetchUserDetails();
@@ -88,8 +88,8 @@ const NavbarDash = () => {
       <div
         className={
           sidebarIsOpen
-            ? "active-nav side-navbar d-flex justify-content-between flex-wrap flex-column"
-            : "side-navbar d-flex justify-content-between flex-wrap flex-column"
+            ? 'active-nav side-navbar d-flex justify-content-between flex-wrap flex-column'
+            : 'side-navbar d-flex justify-content-between flex-wrap flex-column'
         }
       >
         {/* <Nav className="d-flex flex-column justify-content-centre text-black w-100 p-100">
@@ -199,7 +199,11 @@ const NavbarDash = () => {
 
         <div
           class="d-flex flex-column flex-shrink-0 p-3 bg-light"
-          style={{ width: "280px",height:"115vh",boxShadow:"1px 1px 1px black" }}
+          style={{
+            width: '280px',
+            height: '115vh',
+            boxShadow: '1px 1px 1px black',
+          }}
         >
           <a
             href="/"
@@ -211,25 +215,41 @@ const NavbarDash = () => {
           <hr />
           <ul class="nav nav-pills flex-column mb-auto">
             <li>
-              <Link to={"/"} class="nav-link link-dark">
+              <Link
+                to={'/'}
+                class="nav-link link-dark"
+                onClick={() => setSidebarIsOpen(false)}
+              >
                 {/* <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg> */}
                 Dashboard
               </Link>
             </li>
             <li>
-              <Link to={"/dashboard"} class="nav-link link-dark">
+              <Link
+                to={'/dashboard'}
+                class="nav-link link-dark"
+                onClick={() => setSidebarIsOpen(false)}
+              >
                 {/* <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg> */}
                 Student's Applications
               </Link>
             </li>
             <li>
-              <Link to={"/details"} class="nav-link link-dark">
+              <Link
+                to={'/details'}
+                class="nav-link link-dark"
+                onClick={() => setSidebarIsOpen(false)}
+              >
                 {/* <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg> */}
                 New Application
               </Link>
             </li>
             <li>
-              <Link to={"/status"} class="nav-link link-dark">
+              <Link
+                to={'/status'}
+                class="nav-link link-dark"
+                onClick={() => setSidebarIsOpen(false)}
+              >
                 {/* <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg> */}
                 Status
               </Link>

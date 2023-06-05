@@ -1,8 +1,6 @@
 import React from 'react';
 import UserDetails from '../components/UserDetails';
 import CardProfile from '../components/CardProfile';
-// import { useLocation } from "react-router-dom";
-// import AddResearchForm from "../AddResearchForm";
 
 const MainDashboard = ({ data }) => {
   const [inputDisabled, setInputDisabled] = React.useState(true);
@@ -18,7 +16,6 @@ const MainDashboard = ({ data }) => {
   };
   return (
     <>
-      {/* <HeaderDash btnData={btnData} routeTo={routeTo} inputDisabled={inputDisabled} handleInputDisabled={handleInputDisabled} /> */}
       <div className="container-fluid mt-4">
         <div className="row">
           <div className="col-xl-4 order-xl-2 mb-5 mb-xl-0">

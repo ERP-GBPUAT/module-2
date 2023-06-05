@@ -5,6 +5,7 @@ const FormContext = createContext({});
 export const FormProvider = ({ children }) => {
   const [token, setToken] = useState('');
   const [user, setUser] = useState({});
+
   const [data, setData] = useState({
     name: '',
     id: '',

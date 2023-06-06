@@ -244,16 +244,16 @@ const NavbarDash = () => {
                 New Application
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link
                 to={'/status'}
                 class="nav-link link-dark"
                 onClick={() => setSidebarIsOpen(false)}
               >
-                {/* <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg> */}
+                <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
                 Status
               </Link>
-            </li>
+            </li> */}
           </ul>
           <hr />
         </div>

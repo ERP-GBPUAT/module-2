@@ -1,80 +1,90 @@
-import axios from 'axios';
-import { useEffect, useReducer } from 'react';
-import { Container, Card, Button } from 'react-bootstrap';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
-import FormContext from 'context';
-import LoadingBox from '../LoadingBox';
-import MessageBox from '../MessageBox';
+import axios from "axios";
+import { useEffect, useReducer } from "react";
+import { Container, Card, Button } from "react-bootstrap";
+import { useParams, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import FormContext from "context";
+import LoadingBox from "../LoadingBox";
+import MessageBox from "../MessageBox";
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'FETCH_REQUEST':
+    case "FETCH_REQUEST":
       return { ...state, loading: true };
-    case 'FETCH_SUCCESS':
+    case "FETCH_SUCCESS":
       return { ...state, userDetail: action.payload, loading: false };
-    case 'FETCH_FAIL':
+    case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
     default:
       return state;
   }
 };
 const ApplicationPage = () => {
-  const { id } = useParams();
+  const { applicationId } = useParams();
   const navigate = useNavigate();
   const { token } = useContext(FormContext);
 
   const [{ loading, error, userDetail }, dispatch] = useReducer(reducer, {
     loading: true,
     userDetail: {},
-    error: '',
+    error: "",
   });
   const updateStatus = async (e) => {
     try {
-      /*const { data } = await axios.post(
-        '',
-        { status: e.etarget.value },
-        {
-          header: {
-            authorization: `Bearer ${token}`,
-          },
-        }
-      );*/
-    } catch (err) {
-      console.log(err);
-    }
-    console.log(e.target.value);
-    navigate('/dashboard');
-  };
-  /*useEffect(() => {
-    const fetchData = async () => {
-      dispatch({ type: 'FETCH_REQUEST' });
-      try {
-        const { data } = await axios.get('', {
-          header: {
-            authorization: `Bearer ${token}`,
-          },
-        });    
-        dispatch({ type: 'FETCH_SUCCESS', payload: data });
-      } catch (err) {
-        dispatch({type:'FETCH_FAIL',payload:err.message});
+      const res = await fetch(`http://localhost:8080/nodues/approveNodue`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+          token: localStorage.getItem("token"),
+        },
+        body: JSON.stringify({ applicationId, approved: e.target.value==="Approved"?true:false }),
+      });
+      const json = await res.json();
+      if (json.msg === "success") {
+        console.log(json.data);
+        navigate("/dashboard");
       }
-    };    
+    } catch (err) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      dispatch({ type: "FETCH_REQUEST" });
+      try {
+        const res = await fetch(
+          `http://localhost:8080/nodues/getOneNodue/${applicationId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-type": "application/json",
+              token: localStorage.getItem("token"),
+            },
+          }
+        );
+        const json = await res.json();
+        // console.log(json);
+        if (json.msg === "success") {
+          dispatch({ type: "FETCH_SUCCESS", payload: json.data });
+        }
+      } catch (err) {
+        dispatch({ type: "FETCH_FAIL", payload: err.message });
+      }
+    };
     fetchData();
-  });*/
+  }, []);
   const userDetails = {
-    name: 'John Doe',
-    id: '12345',
-    branch: 'Computer Science',
-    batch: '2023',
-    college: 'ABC University',
+    name: "John Doe",
+    id: "12345",
+    branch: "Computer Science",
+    batch: "2023",
+    college: "ABC University",
   };
 
-  return (
-    /* loading ? (
+  return loading ? (
     <LoadingBox />
   ) : error ? (
     <MessageBox variant="danger">{error}</MessageBox>
-  ) : (*/
+  ) : (
     <Container>
       <h1>Application Page</h1>
       <Card className="text-center border-dark">
@@ -83,19 +93,57 @@ const ApplicationPage = () => {
             <strong>User Details</strong>
           </Card.Title>
           <Card.Text>
-            {Object.entries(userDetails).map(([key, value]) => (
-              <span key={key}>
-                <strong>{key}: </strong> {value}
-                <br />
-              </span>
-            ))}
+            <span>
+              <strong><span style={{fontWeight:"bold"}}>Student Id:</span> {userDetail?.Student?.id} </strong>
+              <br />
+              <strong><span style={{fontWeight:"bold"}}>Student Name:</span> {userDetail?.Student?.User?.name} </strong>
+              <br />
+              <strong><span style={{fontWeight:"bold"}}>Email:</span> {userDetail?.Student?.User?.email} </strong>
+              <br />
+              <strong> <span style={{fontWeight:"bold"}}>Batch:</span> {userDetail?.Student?.batch} </strong>
+              <br />
+            </span>
+            <h2 style={{marginTop:"20px"}}>No dues Details</h2>
+            <div>
+              <strong><span style={{fontWeight:"bold"}}>accountName:</span> {userDetail.accountName}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>accountNumber:</span> {userDetail.accountNumber}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>bankName:</span> {userDetail.bankName}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>bankBranch:</span> {userDetail.bankBranch}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>ledger:</span> {userDetail.ledger}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>year:</span> {userDetail.year}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>admissionFees:</span> {userDetail.year}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>tutionFees:</span> {userDetail.tutionFees}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>roomRent:</span> {userDetail.roomRent}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>tourMoney:</span> {userDetail.tourMoney}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>fine:</span> {userDetail.fine}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>miscCharges:</span> {userDetail.miscCharges}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>foodCharges:</span> {userDetail.foodCharges}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>other:</span> {userDetail.other}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>totalAmount:</span> {userDetail.totalAmount}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>tour1:</span> {userDetail.tour1}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>year1:</span> {userDetail.year1}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>lf1:</span> {userDetail.lf1}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>amount1:</span> {userDetail.amount1}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>tour2:</span> {userDetail.tour2}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>year2:</span> {userDetail.year2}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>lf2:</span> {userDetail.lf2}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>amount2:</span> {userDetail.amount2}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>tour3:</span> {userDetail.tour3}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>year3:</span> {userDetail.year3}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>lf3:</span> {userDetail.lf3}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>amount3:</span> {userDetail.amount3}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>foodAdvance:</span> {userDetail.foodAdvance}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>foodCharges2:</span> {userDetail.foodCharges2}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>other2:</span> {userDetail.other2}</strong><br/>
+              <strong><span style={{fontWeight:"bold"}}>balance:</span> {userDetail.balance}</strong><br/>
+            </div>
           </Card.Text>
           <div className="d-flex justify-content-around">
             <Button
               variant="danger"
               type="button"
               value="Rejected"
-              onClick={updateStatus}
+              onClick={() => navigate("/")}
             >
               Rejected
             </Button>

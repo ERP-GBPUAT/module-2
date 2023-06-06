@@ -3,8 +3,6 @@ import { createContext, useEffect, useState } from 'react';
 const FormContext = createContext({});
 
 export const FormProvider = ({ children }) => {
-  const [token, setToken] = useState('');
-  const [user, setUser] = useState({});
 
   const [data, setData] = useState({
     name: '',
@@ -47,12 +45,9 @@ export const FormProvider = ({ children }) => {
     other2: '',
     balance: '',
   });
-  useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem('data')));
-  }, []);
 
   return (
-    <FormContext.Provider value={{ data, setData, user, token }}>
+    <FormContext.Provider value={{ data, setData }}>
       {children}
     </FormContext.Provider>
   );

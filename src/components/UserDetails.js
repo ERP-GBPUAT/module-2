@@ -17,7 +17,7 @@ const UserDetails = ({
             <h3 className="mb-0 text-oliveGreen">My account</h3>
           </div>
           <div className="col-4 text-right">
-            {inputDisabled ? (
+            {/* {inputDisabled ? (
               <Link
                 onClick={() => handleInputDisabled(true)}
                 className="btn btn-sm btn-primary"
@@ -31,7 +31,7 @@ const UserDetails = ({
               >
                 Update
               </Link>
-            )}
+            )} */}
           </div>
         </div>
       </div>

@@ -64,9 +64,9 @@ function App() {
               <Route path="/caution" element={<Caution />} />
               <Route path="/food" element={<Food />} />
               <Route path="/tour" element={<Tour />} />
-              <Route path="/status" element={<Status />} />
+              <Route path="/status/:applicationId" element={<Status />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/print/:id" element={<Print />} />
+              <Route path="/print/:applicationId" element={<Print />} />
             </Routes>
             {/* </Container> */}
           </main>

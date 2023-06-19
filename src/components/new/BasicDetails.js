@@ -2,6 +2,7 @@ import { useContext, useEffect, useReducer, useState } from "react";
 import FormContext from "context";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { useForm, Controller } from "react-hook-form";
 const reducer = (state, action) => {
   switch (action.type) {
     case "FETCH_REQUEST":
@@ -16,6 +17,28 @@ const reducer = (state, action) => {
 };
 
 const BasicDetails = () => {
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      Stname: "",
+      Stid: "",
+      batch: "",
+      department: "",
+      advisorID: "",
+      hostelName: "",
+      email: "",
+      contact: "",
+      accountName: "",
+      accountNumber: "",
+      bankName: "",
+      bankBranch: "",
+    },
+  });
   const [isBank, setIsBank] = useState(false);
   const [{ loading, error, text }, dispatch] = useReducer(reducer, {
     loading: true,
@@ -39,41 +62,81 @@ const BasicDetails = () => {
     };
     fetchData();
   }, []);
-  const student1 = (e) => {
-    e.preventDefault()
-    console.log(data);
-    navigate("/caution");
+  const student1 = (formData) => {
+    setData({
+      ...data,
+      name:formData.Stname,
+      id:formData.Stid,
+      batch:formData.batch,
+      department:formData.department,
+      advisorCode:formData.advisorID,
+      hsotelName:formData.hostelName,
+      email:formData.email,
+      contact:formData.contact,
+      accountName: formData.accountName,
+      accountNumber: formData.accountNumber,
+      bankBranch: formData.bankBranch,
+      bankName: formData.bankName,
+    });
+    navigate("/tour");
+    console.log("deData",formData);
   };
-  const Faculty1 = async (e) => {
-    e.preventDefault()
-    console.log(data);
+  const Faculty1 = async (formData) => {
+    setData({
+      ...data,
+      accountName: formData.accountName,
+      accountNumber: formData.accountNumber,
+      bankBranch: formData.bankBranch,
+      bankName: formData.bankName,
+    });
     try {
       const res = await fetch("http://localhost:8080/nodues/applyEmpNodue", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-        "token": localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        accountName: data.accountName,
-        accountNumber: data.accountNumber,
-        bankName: data.bankName,
-        bankBranch: data.bankBranch,
-      }),
-    });
-    const json =await res.json();
-    console.log("emp no due",json);
-    // console.log({
-    //   accountName: data.accountName,
-    //   accountNumber: data.accountNumber,
-    //   bankName: data.bankName,
-    //   bankBranch: data.bankBranch,
-    // });
-    navigate("/");
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+          token: localStorage.getItem("token"),
+        },
+        body: JSON.stringify({
+          accountName: formData.accountName,
+          accountNumber: formData.accountNumber,
+          bankName: formData.bankName,
+          bankBranch: formData.bankBranch,
+        }),
+      });
+      const json = await res.json();
+      console.log("emp no due", json);
+      // console.log({
+      //   accountName: data.accountName,
+      //   accountNumber: data.accountNumber,
+      //   bankName: data.bankName,
+      //   bankBranch: data.bankBranch,
+      // });
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
-    
+  };
+  const onSubmitPerDet = (formData) => {
+    setIsBank(true);
+    setData({
+      ...data,
+      name: formData.name,
+      email: formData.email,
+      contact: formData.contact,
+    });
+  };
+  const onSubmitPerDetSt = (formData) => {
+    setIsBank(true);
+    setData({
+      ...data,
+      name: formData.name,
+      id: formData.id,
+      hostelName: formData.hostelName,
+      batch: formData.batch,
+      advisorCode: formData.advisorCode,
+      email: formData.email,
+      contact: formData.contact,
+    });
   };
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -84,26 +147,27 @@ const BasicDetails = () => {
         <div>Loading...</div>
       ) : (
         <Container className="d-flex flex-column">
-          <h3 className="text-center mt-4">Enter Basic Details</h3>
+          <h3 className="text-center mt-4">Enter Personal Details</h3>
           <div className="d-flex justify-content-between gap-20">
-            <Button
+            {/* <Button
               variant={isBank ? "dark" : "success"}
               type="button"
               onClick={() => setIsBank(false)}
             >
               Personal Details
-            </Button>
-            <Button
+            </Button> */}
+            {/* <Button
               variant={isBank ? "success" : "dark"}
               type="button"
               onClick={() => setIsBank(true)}
             >
               Bank Details
-            </Button>
+            </Button> */}
           </div>
-          <Form onSubmit={text?.user?.isStudent?student1:Faculty1}>
-            {!isBank ? (
-              text?.user?.isStudent ? (
+
+          {!isBank ? (
+            text?.user?.isStudent ? (
+              <Form onSubmit={handleSubmit(onSubmitPerDetSt)}>
                 <Row className="justify-content-center mt-4">
                   <Col xs={12} md={4}>
                     <Form.Group controlId="name">
@@ -111,10 +175,30 @@ const BasicDetails = () => {
                       <Form.Control
                         type="text"
                         name="name"
-                        value={data.name}
-                        onChange={handleChange}
-                        required
+                        {...register("Stname", {
+                          required: {
+                            value: true,
+                            message: "This field is required",
+                          },
+                          pattern: {
+                            value:
+                              /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/i,
+                            message: "Enter a valid name",
+                          },
+                          minLength: {
+                            value: 3,
+                            message: "Person namelength should be atleast 3",
+                          },
+                        })}
+                        isInvalid={errors.Stname}
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors?.Stname?.type ? (
+                          <p>{errors?.Stname?.message}</p>
+                        ) : (
+                          ""
+                        )}
+                      </Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group controlId="id">
@@ -122,10 +206,34 @@ const BasicDetails = () => {
                       <Form.Control
                         type="text"
                         name="id"
-                        value={data.id}
-                        onChange={handleChange}
-                        required
+                        {...register("Stid", {
+                          required: {
+                            value: true,
+                            message: "This feild is required",
+                          },
+                          minLength: {
+                            value: 5,
+                            message: "Student ID is invalid",
+                          },
+                          maxLength: {
+                            value: 5,
+                            message: "Invalid Student ID",
+                          },
+                          pattern: {
+                            value: /^[0-9+-]+$/,
+                            message:
+                              "Student ID can only contain numeric values",
+                          },
+                        })}
+                        isInvalid={errors.Stid}
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors?.Stid?.type ? (
+                          <p>{errors?.Stid?.message}</p>
+                        ) : (
+                          ""
+                        )}
+                      </Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group controlId="batch">
@@ -133,10 +241,30 @@ const BasicDetails = () => {
                       <Form.Control
                         type="text"
                         name="batch"
-                        value={data.batch}
-                        onChange={handleChange}
-                        required
+                        {...register("batch", {
+                          required: {
+                            value: true,
+                            message: "This feild is required",
+                          },
+                          minLength: { value: 4, message: "Batch is invalid" },
+                          maxLength: {
+                            value: 4,
+                            message: "Invalid Bacth Year",
+                          },
+                          pattern: {
+                            value: /^[0-9+-]+$/,
+                            message: "Batch can only contain numeric values",
+                          },
+                        })}
+                        isInvalid={errors.batch}
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors?.batch?.type ? (
+                          <p>{errors?.batch?.message}</p>
+                        ) : (
+                          ""
+                        )}
+                      </Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group controlId="department">
@@ -146,7 +274,7 @@ const BasicDetails = () => {
                         name="department"
                         value={data.department}
                         onChange={handleChange}
-                        required
+                        // required
                       />
                     </Form.Group>
                   </Col>
@@ -155,11 +283,35 @@ const BasicDetails = () => {
                       <Form.Label>Advisor Id</Form.Label>
                       <Form.Control
                         type="text"
-                        name="advisorName"
-                        value={data.advisorName}
-                        onChange={handleChange}
-                        required
+                        name="advisorID"
+                        {...register("advisorID", {
+                          required: {
+                            value: true,
+                            message: "This field is required",
+                          },
+                          pattern: {
+                            value:
+                              /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/i,
+                            message: "Enter a valid Advisor code a",
+                          },
+                          maxLength: {
+                            value: 6,
+                            message: "Enter a valid advisor code",
+                          },
+                          minLength: {
+                            value: 3,
+                            message: "Enter a valid advisor code",
+                          },
+                        })}
+                        isInvalid={errors.advisorID}
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors?.advisorID?.type ? (
+                          <p>{errors?.advisorID?.message}</p>
+                        ) : (
+                          ""
+                        )}
+                      </Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group controlId="hostelName">
@@ -167,10 +319,30 @@ const BasicDetails = () => {
                       <Form.Control
                         type="text"
                         name="hostelName"
-                        value={data.hostelName}
-                        onChange={handleChange}
-                        required
+                        {...register("hostelName", {
+                          required: {
+                            value: true,
+                            message: "This field is required",
+                          },
+                          pattern: {
+                            value:
+                              /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/i,
+                            message: "Enter a valid hostel name",
+                          },
+                          minLength: {
+                            value: 10,
+                            message: "Enter a valid hostel name",
+                          },
+                        })}
+                        isInvalid={errors.hostelName}
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors?.hostelName?.type ? (
+                          <p>{errors?.hostelName?.message}</p>
+                        ) : (
+                          <p></p>
+                        )}
+                      </Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group controlId="email">
@@ -178,10 +350,25 @@ const BasicDetails = () => {
                       <Form.Control
                         type="text"
                         name="email"
-                        value={data.email}
-                        onChange={handleChange}
-                        required
+                        {...register("email", {
+                          required: {
+                            value: true,
+                            message: "This field is required",
+                          },
+                          pattern: {
+                            value: /^\S+@\S+$/i,
+                            message: "Enter a valid email",
+                          },
+                        })}
+                        isInvalid={errors.email}
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors?.email?.type ? (
+                          <p>{errors?.email?.message}</p>
+                        ) : (
+                          <p>{"hello "}</p>
+                        )}
+                      </Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group controlId="contact">
@@ -189,25 +376,83 @@ const BasicDetails = () => {
                       <Form.Control
                         type="text"
                         name="contact"
-                        value={data.contact}
-                        onChange={handleChange}
-                        required
+                        {...register("contact", {
+                          required: {
+                            value: true,
+                            message: "This field is required",
+                          },
+                          pattern: {
+                            value: /^[0-9+-]+$/,
+                            message: "Enter a valid email",
+                          },
+                          minLength: {
+                            value: 10,
+                            message: "Enter a valid phone number",
+                          },
+                          maxLength: {
+                            value: 10,
+                            message: "Enter a valid phone number",
+                          },
+                        })}
+                        isInvalid={errors.contact}
+                        // required
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors?.contact?.type ? (
+                          <p>{errors?.contact?.message}</p>
+                        ) : (
+                          ""
+                        )}
+                      </Form.Control.Feedback>
                     </Form.Group>
                   </Col>
                 </Row>
-              ) : (
+                <Row className="mt-4">
+                  <Col xs={12} md={4}>
+                    <Button variant="primary" type="submit">
+                      Next
+                    </Button>
+                  </Col>
+                </Row>
+              </Form>
+            ) : (
+              <Form onSubmit={handleSubmit(onSubmitPerDet)}>
                 <Row className="justify-content-center mt-4">
                   <Col xs={12} md={6}>
                     <Form.Group controlId="name">
                       <Form.Label>Name</Form.Label>
-                      <Form.Control
-                        type="text"
+                      <Controller
+                        control={control}
                         name="name"
-                        value={data.name}
-                        onChange={handleChange}
-                        required
+                        defaultValue=""
+                        rules={{
+                          required: true,
+                          minLength: 3,
+                          pattern:
+                            /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/i,
+                        }}
+                        render={({
+                          field: { onChange, onBlur, value, ref },
+                        }) => (
+                          <Form.Control
+                            onChange={onChange}
+                            value={value}
+                            ref={ref}
+                            isInvalid={errors.name}
+                          />
+                        )}
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors?.name?.type === "required" && (
+                          <p>This field is required</p>
+                        )}
+                        {errors?.name?.type === "minLength" && (
+                          <p>Name cannot be less than 3 characters</p>
+                        )}
+                        {errors?.name?.type === "pattern" && (
+                          <p>Alphabetical characters only</p>
+                        )}
+                      </Form.Control.Feedback>
                     </Form.Group>
                     <Form.Group controlId="department">
                       <Form.Label>Department</Form.Label>
@@ -216,7 +461,8 @@ const BasicDetails = () => {
                         name="department"
                         value={data.department}
                         onChange={handleChange}
-                        required
+
+                        // required
                       />
                     </Form.Group>
                     <Form.Group controlId="advisorName">
@@ -226,45 +472,124 @@ const BasicDetails = () => {
                         name="advisorName"
                         value={data.advisorName}
                         onChange={handleChange}
-                        required
+                        // required
                       />
                     </Form.Group>
                     <Form.Group controlId="email">
                       <Form.Label>email</Form.Label>
-                      <Form.Control
-                        type="text"
+                      <Controller
+                        control={control}
                         name="email"
-                        value={data.email}
-                        onChange={handleChange}
-                        required
+                        defaultValue=""
+                        rules={{
+                          required: true,
+                          pattern: /^\S+@\S+$/i,
+                        }}
+                        render={({
+                          field: { onChange, onBlur, value, ref },
+                        }) => (
+                          <Form.Control
+                            value={value}
+                            ref={ref}
+                            onChange={onChange}
+                            isInvalid={errors.email}
+                            // required
+                          />
+                        )}
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors?.email?.type === "required" && (
+                          <p>This field is required</p>
+                        )}
+                        {errors?.email?.type === "pattern" && (
+                          <p>Enter a valid email</p>
+                        )}
+                      </Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group controlId="contact">
                       <Form.Label>Contact</Form.Label>
-                      <Form.Control
-                        type="text"
+                      <Controller
+                        control={control}
                         name="contact"
-                        value={data.contact}
-                        onChange={handleChange}
-                        required
+                        defaultValue=""
+                        rules={{
+                          required: true,
+                          minLength: 10,
+                          maxLength: 10,
+                          pattern: /^[0-9+-]+$/,
+                        }}
+                        render={({
+                          field: { onChange, onBlur, value, ref },
+                        }) => (
+                          <Form.Control
+                            ref={ref}
+                            value={value}
+                            onChange={onChange}
+                            isInvalid={errors.contact}
+                            // required
+                          />
+                        )}
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors?.contact?.type === "required" && (
+                          <p>This field is required</p>
+                        )}
+                        {(errors?.contact?.type === "minLength" ||
+                          errors?.contact?.type === "maxLength") && (
+                          <p>Enter a valid phone number</p>
+                        )}
+                        {errors?.contact?.type === "pattern" && (
+                          <p>Enter a valid phone number</p>
+                        )}
+                      </Form.Control.Feedback>
                     </Form.Group>
                   </Col>
                 </Row>
-              )
-            ) : (
+                <Row className="mt-4">
+                  <Col xs={12} md={4}>
+                    <Button variant="primary" type="submit">
+                      Next
+                    </Button>
+                  </Col>
+                </Row>
+              </Form>
+            )
+          ) : (
+            <Form
+              onSubmit={handleSubmit(
+                text?.user?.isStudent ? student1 : Faculty1
+              )}
+            >
               <Row className="justify-content-center mt-4">
                 <Col xs={12} md={6}>
                   <Form.Group controlId="accountName">
-                    <Form.Label>AccountName</Form.Label>
+                    <Form.Label>Account Name</Form.Label>
                     <Form.Control
                       type="text"
                       name="accountName"
-                      value={data.accountName}
-                      onChange={handleChange}
-                      required
+                      {...register("accountName", {
+                        required: {
+                          value: true,
+                          message: "This field is required",
+                        },
+                        pattern: {
+                          value: /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/i,
+                          message: "Enter a valid name",
+                        },
+                        minLength: {
+                          value: 3,
+                          message:
+                            "Account holder name length should be atleast 3",
+                        },
+                      })}
+                      isInvalid={errors.accountName}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {errors?.accountName?.type && (
+                        <p>{errors?.accountName?.message}</p>
+                      )}
+                    </Form.Control.Feedback>
                   </Form.Group>
 
                   <Form.Group controlId="accountNumber">
@@ -272,10 +597,32 @@ const BasicDetails = () => {
                     <Form.Control
                       type="text"
                       name="accountNumber"
-                      value={data.accountNumber}
-                      onChange={handleChange}
-                      required
+                      {...register("accountNumber", {
+                        required: {
+                          value: true,
+                          message: "This feild is required",
+                        },
+                        minLength: {
+                          value: 11,
+                          message: "Account number is invalid",
+                        },
+                        maxLength: {
+                          value: 16,
+                          message: "Invalid Account number",
+                        },
+                        pattern: {
+                          value: /^[0-9+-]+$/,
+                          message:
+                            "Account number can only contain numeric values",
+                        },
+                      })}
+                      isInvalid={errors.accountNumber}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {errors?.accountNumber?.type && (
+                        <p>{errors?.accountNumber?.message}</p>
+                      )}
+                    </Form.Control.Feedback>
                   </Form.Group>
 
                   <Form.Group controlId="bankName">
@@ -283,33 +630,67 @@ const BasicDetails = () => {
                     <Form.Control
                       type="text"
                       name="bankName"
-                      value={data.bankName}
-                      onChange={handleChange}
-                      required
+                      {...register("bankName", {
+                        required: {
+                          value: true,
+                          message: "This field is required",
+                        },
+                        pattern: {
+                          value: /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/i,
+                          message: "Enter a valid name",
+                        },
+                        minLength: {
+                          value: 10,
+                          message: "Enter a valid Bank name",
+                        },
+                      })}
+                      isInvalid={errors.bankName}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {errors?.bankName?.type && (
+                        <p>{errors?.bankName?.message}</p>
+                      )}
+                    </Form.Control.Feedback>
                   </Form.Group>
 
                   <Form.Group controlId="bankBranch">
-                    <Form.Label>BankBranch</Form.Label>
+                    <Form.Label>Bank Branch</Form.Label>
                     <Form.Control
                       type="text"
                       name="bankBranch"
-                      value={data.bankBranch}
-                      onChange={handleChange}
-                      required
+                      {...register("bankBranch", {
+                        required: {
+                          value: true,
+                          message: "This field is required",
+                        },
+                        pattern: {
+                          value: /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/i,
+                          message: "Enter a valid branch",
+                        },
+                        minLength: {
+                          value: 3,
+                          message: "Enter a valid branch",
+                        },
+                      })}
+                      isInvalid={errors.bankBranch}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {errors?.bankBranch?.type && (
+                        <p>{errors?.bankBranch?.message}</p>
+                      )}
+                    </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
               </Row>
-            )}
-            <Row className="mt-4">
-              <Col xs={12} md={4}>
-                <Button variant="primary" type="submit">
-                  {text?.user?.isStudent?"Next":"Submit"}
-                </Button>
-              </Col>
-            </Row>
-          </Form>
+              <Row className="mt-4">
+                <Col xs={12} md={4}>
+                  <Button variant="primary" type="submit">
+                    {text?.user?.isStudent ? "Next" : "Submit"}
+                  </Button>
+                </Col>
+              </Row>
+            </Form>
+          )}
         </Container>
       )}
     </>

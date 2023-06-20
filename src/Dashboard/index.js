@@ -136,7 +136,7 @@ const ApplicationDashboard = () => {
                           : "Pending"}
                     </Button> */}
                   </Card.Text>
-                  <LinkContainer to={`/print/${application.id}`}>
+                  <Container>
                     {JSON.parse(localStorage.getItem("data"))?.user
                       ?.isStudent ? (
                       <Button
@@ -155,7 +155,7 @@ const ApplicationDashboard = () => {
                         View Details
                       </Button>
                     )}
-                  </LinkContainer>
+                  </Container>
                 </Card.Body>
               </Card>
             ))}

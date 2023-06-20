@@ -89,8 +89,27 @@ const ApplicationPage = () => {
       <h1>Application Page</h1>
       <Card className="text-center border-dark">
         <Card.Body>
+          
+          <div className="d-flex justify-content-around">
+            <Button
+              variant="danger"
+              type="button"
+              value="Rejected"
+              onClick={() => navigate("/")}
+            >
+              Reject
+            </Button>
+            <Button
+              variant="success"
+              type="button"
+              value="Approved"
+              onClick={updateStatus}
+            >
+              Approve
+            </Button>
+          </div>
           <Card.Title>
-            <strong>User Details</strong>
+            <div style={{fontSize:"25px"}}>User Details</div> 
           </Card.Title>
           <Card.Text>
             <span>
@@ -109,17 +128,6 @@ const ApplicationPage = () => {
               <strong><span style={{fontWeight:"bold"}}>accountNumber:</span> {userDetail.accountNumber}</strong><br/>
               <strong><span style={{fontWeight:"bold"}}>bankName:</span> {userDetail.bankName}</strong><br/>
               <strong><span style={{fontWeight:"bold"}}>bankBranch:</span> {userDetail.bankBranch}</strong><br/>
-              <strong><span style={{fontWeight:"bold"}}>ledger:</span> {userDetail.ledger}</strong><br/>
-              <strong><span style={{fontWeight:"bold"}}>year:</span> {userDetail.year}</strong><br/>
-              <strong><span style={{fontWeight:"bold"}}>admissionFees:</span> {userDetail.year}</strong><br/>
-              <strong><span style={{fontWeight:"bold"}}>tutionFees:</span> {userDetail.tutionFees}</strong><br/>
-              <strong><span style={{fontWeight:"bold"}}>roomRent:</span> {userDetail.roomRent}</strong><br/>
-              <strong><span style={{fontWeight:"bold"}}>tourMoney:</span> {userDetail.tourMoney}</strong><br/>
-              <strong><span style={{fontWeight:"bold"}}>fine:</span> {userDetail.fine}</strong><br/>
-              <strong><span style={{fontWeight:"bold"}}>miscCharges:</span> {userDetail.miscCharges}</strong><br/>
-              <strong><span style={{fontWeight:"bold"}}>foodCharges:</span> {userDetail.foodCharges}</strong><br/>
-              <strong><span style={{fontWeight:"bold"}}>other:</span> {userDetail.other}</strong><br/>
-              <strong><span style={{fontWeight:"bold"}}>totalAmount:</span> {userDetail.totalAmount}</strong><br/>
               <strong><span style={{fontWeight:"bold"}}>tour1:</span> {userDetail.tour1}</strong><br/>
               <strong><span style={{fontWeight:"bold"}}>year1:</span> {userDetail.year1}</strong><br/>
               <strong><span style={{fontWeight:"bold"}}>lf1:</span> {userDetail.lf1}</strong><br/>
@@ -132,30 +140,9 @@ const ApplicationPage = () => {
               <strong><span style={{fontWeight:"bold"}}>year3:</span> {userDetail.year3}</strong><br/>
               <strong><span style={{fontWeight:"bold"}}>lf3:</span> {userDetail.lf3}</strong><br/>
               <strong><span style={{fontWeight:"bold"}}>amount3:</span> {userDetail.amount3}</strong><br/>
-              <strong><span style={{fontWeight:"bold"}}>foodAdvance:</span> {userDetail.foodAdvance}</strong><br/>
-              <strong><span style={{fontWeight:"bold"}}>foodCharges2:</span> {userDetail.foodCharges2}</strong><br/>
-              <strong><span style={{fontWeight:"bold"}}>other2:</span> {userDetail.other2}</strong><br/>
-              <strong><span style={{fontWeight:"bold"}}>balance:</span> {userDetail.balance}</strong><br/>
             </div>
           </Card.Text>
-          <div className="d-flex justify-content-around">
-            <Button
-              variant="danger"
-              type="button"
-              value="Rejected"
-              onClick={() => navigate("/")}
-            >
-              Rejected
-            </Button>
-            <Button
-              variant="success"
-              type="button"
-              value="Approved"
-              onClick={updateStatus}
-            >
-              Approved
-            </Button>
-          </div>
+          
         </Card.Body>
       </Card>
     </Container>
